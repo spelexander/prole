@@ -16,6 +16,8 @@
     "tabs",
     "storage",
     "notifications",
-    "webNavigation"
+    "webNavigation",
+    "webRequest",
+    "http://localhost:8080/*"
   ]
 }

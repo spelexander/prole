@@ -1,6 +1,5 @@
 import React from 'react';
 import Typography from "@material-ui/core/Typography";
-import Divider from "@material-ui/core/Divider";
 
 const style = {
     marginTop: '20px',
@@ -18,11 +17,11 @@ const Controls = () => {
         right: 0,
         marginBottom: '10px',
     }}>
-        <Typography style={style} align="left" variant="h3" display="block">
-            <a href="https://www.google.com" target="_blank">Settings</a>
-        </Typography>
+        {/*<Typography style={style} align="left" variant="h3" display="block">*/}
+            {/*<a href="https://www.google.com" target="_blank" rel="noopener noreferrer">Settings</a>*/}
+        {/*</Typography>*/}
         <Typography style={{...style, marginLeft: 'auto', order: 2, marginRight: '20px'}} align="left" variant="h3" display="block">
-            Something not right? <a href="https://www.google.com" target="_blank">Let us know</a>
+            Something not right? <a href={process.env.REACT_APP_HELP_URL} target="_blank" rel="noopener noreferrer">Let us know</a>
         </Typography>
     </div>
 };
