@@ -1,0 +1,21 @@
+{
+  "browser_action": {
+    "default_icon": "logo512.png",
+    "default_title": "Prole",
+    "default_popup": "index.html"
+  },
+  "short_name": "Prole",
+  "name": "Prole - Stay woke",
+  "version": "1.0.0",
+  "manifest_version": 2,
+  "description": "Prole - News site endorsement checker. Stay woke",
+  "icons": {
+    "512": "logo512.png"
+  },
+  "permissions": [
+    "tabs",
+    "storage",
+    "notifications",
+    "webNavigation"
+  ]
+}
