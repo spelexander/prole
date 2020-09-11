@@ -1,7 +1,8 @@
 # See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
 
-*.env
-*app.yaml
+backend/start-db.sh
+prole-fe/.env.local
+prole-site-fe/.env.local
 
 # dependencies
 prole-fe/node_modules

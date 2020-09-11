@@ -4,11 +4,11 @@
     "default_title": "Prole",
     "default_popup": "index.html"
   },
-  "short_name": "Prole",
-  "name": "Prole - Stay woke",
+  "short_name": "Prole.",
+  "name": "Prole.",
   "version": "1.0.0",
   "manifest_version": 2,
-  "description": "Prole - News site endorsement checker. Stay woke",
+  "description": "Prole - News site endorsement checker",
   "icons": {
     "512": "logo512.png"
   },
