@@ -1,9 +1,5 @@
 # See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
 
-backend/start-db.sh
-prole-fe/.env.local
-prole-site-fe/.env.local
-
 # dependencies
 prole-fe/node_modules
 prole-site-fe/node_modules
@@ -19,8 +15,6 @@ prole-site-fe/build
 prole-site-fe/src/build-common
 
 prole-site-fe/app.yaml
-backend/app.yaml
-
 backend/fe-build
 
 */.pnp
