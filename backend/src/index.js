@@ -1,3 +1,5 @@
+const { validateEndorsementRequest, validateHostName } = require("./validator");
+const { addEndorsement, getEndorsements, updateEndorsement, archiveEndorsement } = require('./service');
 const express = require('express');
 
 const app = express();
@@ -7,61 +9,6 @@ const port = 8080;
 app.use(express.json());
 app.use(express.urlencoded());
 
-
-const validate = (req) => {
-    return req.body && req.body.hostname;
-};
-
-const endorsement1 = {
-    endorsee: {
-        colour: 'red',
-        name: 'Coalition',
-        branch: null,
-        url: 'https://www.google.com'
-    },
-    level: 'primary',
-    type: 'publication',
-    references: [
-        {
-            title: 'Who you should vote for this election.',
-            author: 'Joe Blogs',
-            date: '2019/03/14',
-            url: 'https://www.google.com'
-        }
-    ]
-};
-
-const endorsement2 = {
-    endorsee: {
-        colour: 'blue',
-        name: 'Labour',
-        branch: null,
-        url: 'https://www.google.com'
-    },
-    level: 'secondary',
-    type: 'publication',
-    references: [
-        {
-            title: 'Why Labour is the way to go this election.',
-            author: 'Jane Docs',
-            date: '2018/03/15',
-            url: 'https://www.google.com'
-        },
-        {
-            title: 'What to do at the voting polls',
-            author: 'Judy Pages',
-            date: '2018/12/15',
-            url: 'https://www.google.com'
-        },
-        {
-            title: 'Decisive plans of actions',
-            author: 'Harold Holt',
-            date: '2020/03/15',
-            url: 'https://www.google.com'
-        }
-    ]
-};
-
 app.use(express.static('fe-build'));
 app.get('*', function(req, res) {
     res.sendFile('index.html', {root: 'fe-build'});
@@ -69,7 +16,7 @@ app.get('*', function(req, res) {
 
 // endpoints
 app.post('/prole', async (req, res) => {
-    if (!validate(req)) {
+    if (!validateHostName(req)) {
         res.status(400);
         res.send({ error: 'hostname must be provided' });
         return;
@@ -77,7 +24,47 @@ app.post('/prole', async (req, res) => {
 
     const { hostname } = req.body;
 
-    res.send([ endorsement1, endorsement2 ]);
+    const endorsements = await getEndorsements(hostname);
+    res.send(endorsements);
+});
+
+const PROLE_EDIT_PATH = '/prole/edit';
+
+app.post(PROLE_EDIT_PATH, async (req, res) => {
+    const request = req.body;
+    const {pass, errors} = validateEndorsementRequest(request);
+
+    if (!pass) {
+        res.status(400);
+        res.send(errors);
+        return;
+    }
+
+    res.send(await addEndorsement(request));
+});
+
+app.put(PROLE_EDIT_PATH, async (req, res) => {
+    const request = req.body;
+
+    if (!request.id || !request.endorsement) {
+        res.status(400);
+        res.send('must provide object of shape: { id: Number, endorsement: {...} }');
+        return;
+    }
+
+    res.send(await updateEndorsement(request.id, request.endorsement));
+});
+
+app.delete(PROLE_EDIT_PATH, async (req, res) => {
+    const request = req.body;
+
+    if (!request.id) {
+        res.status(400);
+        res.send('must provide object of shape: { id: Number }');
+        return;
+    }
+
+    res.send(await archiveEndorsement(request.id));
 });
 
 app.listen(port, () => console.log(`🚀 prole started on port: ${port}`));

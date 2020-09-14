@@ -3,6 +3,7 @@
     "start": "node src/index.js"
   },
   "dependencies": {
+    "@google-cloud/datastore": "^6.1.0",
     "express": "^4.17.1"
   }
 }

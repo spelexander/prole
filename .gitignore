@@ -4,6 +4,7 @@
 prole-fe/node_modules
 prole-site-fe/node_modules
 backend/node_modules
+backend/app.yaml
 
 prole-fe/.env
 prole-site-fe/.env
