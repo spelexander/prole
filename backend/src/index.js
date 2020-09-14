@@ -5,6 +5,8 @@ const express = require('express');
 const app = express();
 const port = 8080;
 
+const EXPECTED_WRITE_TOKEN = process.env.WRITE_TOKEN || 'test';
+
 // middleware
 app.use(express.json());
 app.use(express.urlencoded());
@@ -13,6 +15,16 @@ app.use(express.static('fe-build'));
 app.get('*', function(req, res) {
     res.sendFile('index.html', {root: 'fe-build'});
 });
+
+const validateWriteToken = (req, res) => {
+    const token = req.headers && req.headers.token;
+    if (token !== EXPECTED_WRITE_TOKEN) {
+        res.status(403);
+        res.send({error: 'You are not authorized to use this resource.'});
+        return false;
+    }
+    return true;
+};
 
 // endpoints
 app.post('/prole', async (req, res) => {
@@ -31,6 +43,10 @@ app.post('/prole', async (req, res) => {
 const PROLE_EDIT_PATH = '/prole/edit';
 
 app.post(PROLE_EDIT_PATH, async (req, res) => {
+    if (!validateWriteToken(req, res)) {
+        return;
+    }
+
     const request = req.body;
     const {pass, errors} = validateEndorsementRequest(request);
 
@@ -44,6 +60,10 @@ app.post(PROLE_EDIT_PATH, async (req, res) => {
 });
 
 app.put(PROLE_EDIT_PATH, async (req, res) => {
+    if (!validateWriteToken(req, res)) {
+        return;
+    }
+
     const request = req.body;
 
     if (!request.id || !request.endorsement) {
@@ -56,6 +76,10 @@ app.put(PROLE_EDIT_PATH, async (req, res) => {
 });
 
 app.delete(PROLE_EDIT_PATH, async (req, res) => {
+    if (!validateWriteToken(req, res)) {
+        return;
+    }
+
     const request = req.body;
 
     if (!request.id) {

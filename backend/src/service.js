@@ -6,7 +6,6 @@ const datastore = new DatastoreService();
 const ENDORSEMENTS = 'endorsements';
 const ENDORSEMENT_HOST_NAME = 'endorsement_hostname';
 
-
 const archiveEndorsement = (id) => updateEndorsement(id, { archived: true });
 
 const updateEndorsement = async (id, endorsement) => {
@@ -41,7 +40,6 @@ const updateEndorsement = async (id, endorsement) => {
 const addEndorsement = async (endorsement) => {
     const commitResponse = await datastore.save(ENDORSEMENTS, {...endorsement, archived: false});
 
-    console.log('commitResponse', commitResponse);
     if (commitResponse.success) {
         endorsement.hostnames.forEach(hostname => _addHostNameForEndorsement(commitResponse.id, hostname));
         return commitResponse;
@@ -64,13 +62,11 @@ const getEndorsements = async (hostname) => {
         value: hostname
     }]);
 
-    console.log('endorsementByHostName', endorsementByHostName);
     if (!endorsementByHostName || endorsementByHostName.length === 0) {
         return [];
     }
 
     const results = await datastore.getBatch(ENDORSEMENTS, endorsementByHostName.map(endObj => endObj.endorsement));
-    console.log(results);
     return results && results.filter(result => !result.archived);
 };
 

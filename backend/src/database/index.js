@@ -80,7 +80,6 @@ class DatastoreService {
             key: key,
             data: newEntity,
         };
-        console.log('new entity:', entity);
         const commitResponse = await this.datastore.update(entity);
         return DatastoreService.successResponse(String(key.path[1]), newEntity, commitResponse);
     }
@@ -93,10 +92,8 @@ class DatastoreService {
 
     async getBatch(tableName, ids) {
         const keys = ids.map(id => this.keyProvider(tableName, id));
-        console.log('keys:', keys);
         return this.datastore.get(keys)
             .then(response => {
-                console.log('response:', response);
                 return this.sanitiseBatchResponse(response);
             });
     }
