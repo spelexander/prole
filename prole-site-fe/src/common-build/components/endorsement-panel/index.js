@@ -29,7 +29,20 @@ const EndorsementPanel = ({loading, error, endorsements}) => {
                                 references={selectedEndorsement.references}/>
     }
 
-    return endorsements.map(endorsement => <Endorsement endorsement={endorsement}
+    if (!loading && endorsements.length === 0) {
+        return <>
+            <Typography style={{fontSize: '20px', width: '100%', marginTop: '20px'}} align="center" variant="h6"
+                           display="block">
+            Prole found no endorsements
+        </Typography>
+            <Typography style={{fontSize: '11px', marginLeft: '30px', marginRight: '30px', marginTop: '20px'}} align="center" variant="h6"
+        display="block">
+            This doesn't necessarily mean there isn't any endorsements, just that Prole doesn't know about any.
+    </Typography>
+        </>
+    }
+
+    return endorsements && endorsements.map(endorsement => <Endorsement endorsement={endorsement}
                                                         setSelectedEndorsement={setSelectedEndorsement}/>);
 };
 

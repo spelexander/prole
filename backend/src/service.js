@@ -70,9 +70,12 @@ const getEndorsements = async (hostname) => {
     return results && results.filter(result => !result.archived);
 };
 
+const listEndorsements = () => datastore.list(ENDORSEMENTS);
+
 module.exports = {
     addEndorsement,
     getEndorsements,
+    listEndorsements,
     updateEndorsement,
     archiveEndorsement
 };

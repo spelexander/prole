@@ -1,11 +1,11 @@
 import React from 'react';
 import ProleTitle from "./common-build/components/prole-title";
 import {BrowserRouter, Route} from "react-router-dom";
-import Home from "./home";
-import Try from "./try";
-import About from "./about";
+import Home from "./ui/home";
+import Try from "./ui/try";
+import About from "./ui/about";
+import Data from "./ui/data";
 import Button from "@material-ui/core/Button";
-import Data from "./data";
 import {isMobile} from 'react-device-detect';
 
 const buttonStyle = {
@@ -37,6 +37,8 @@ function App() {
                         <Route path='/try' component={Try}/>
                         <Route path='/about' component={About}/>
                         <Route path='/data' component={Data}/>
+                        <Route path='/edit' component={Try}/>
+                        <Route path='/feedback' component={Try}/>
                     </BrowserRouter>
                 </div>
             </div>

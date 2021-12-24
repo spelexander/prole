@@ -1,5 +1,5 @@
 const { validateEndorsementRequest, validateHostName } = require("./validator");
-const { addEndorsement, getEndorsements, updateEndorsement, archiveEndorsement } = require('./service');
+const { addEndorsement, getEndorsements, updateEndorsement, archiveEndorsement, listEndorsements } = require('./service');
 const express = require('express');
 
 const app = express();
@@ -27,7 +27,9 @@ const validateWriteToken = (req, res) => {
 };
 
 // endpoints
-app.post('/prole', async (req, res) => {
+const PROLE_DATA_PATH = '/prole';
+
+app.post(PROLE_DATA_PATH, async (req, res) => {
     if (!validateHostName(req)) {
         res.status(400);
         res.send({ error: 'hostname must be provided' });
@@ -37,6 +39,11 @@ app.post('/prole', async (req, res) => {
     const { hostname } = req.body;
 
     const endorsements = await getEndorsements(hostname);
+    res.send(endorsements);
+});
+
+app.post(PROLE_DATA_PATH + '/list', async (req, res) => {
+    const endorsements = await listEndorsements();
     res.send(endorsements);
 });
 

@@ -11,17 +11,16 @@ const style = {
 
 const InlineEdit = ({initialValue, onChanged, width, startEdit}) => {
 
-    const hostName = getHostName(initialValue);
     const [editing, setEditing] = useState(startEdit);
-    const [value, setValue] = useState(hostName);
+    const [value, setValue] = useState(initialValue);
 
     useEffect(() => {
-        if (hostName !== value) {
-            if (hostName) {
-                setValue(hostName);
+        if (initialValue !== value) {
+            if (initialValue) {
+                setValue(initialValue);
             }
         }
-    }, [hostName]);
+    }, [initialValue]);
 
     const getTextField = (defaultValue) => <TextField
         style={{...style, width}}

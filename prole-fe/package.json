@@ -16,9 +16,8 @@
     "storybook": "^6.0.20"
   },
   "scripts": {
-    "start": "react-scripts start",
+    "start": "cra-build-watch -v --build-path ./build",
     "build": "react-scripts build",
-    "watch:build": "cra-build-watch -v --build-path ./build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
     "storybook": "start-storybook -p 6006 -s public",

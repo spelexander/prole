@@ -2,6 +2,7 @@
 
 import React, {useEffect, useState} from 'react';
 import Popup from "./Popup";
+import {getHostName} from "./common/utils";
 
 function App() {
 
@@ -13,13 +14,15 @@ function App() {
     useEffect(() => {
         chrome.tabs.query({active: true, lastFocusedWindow: true}, tabs => {
             const url = tabs[0].url;
-            setCurrentUrl(url);
+            const formattedUrl = url && getHostName(url);
+            setCurrentUrl(formattedUrl);
         });
     }, []);
 
     useEffect(() => {
        const fetchData = async () => {
             if (currentUrl) {
+                setLoading(true);
                 try {
                     const newEndorsements = await fetch(`${process.env.REACT_APP_SERVER_URL}/prole`, {
                         method: 'POST',
@@ -40,7 +43,13 @@ function App() {
     }, [currentUrl]);
 
     return (
-        <Popup error={error} loading={loading} endorsements={endorsements} url={currentUrl} setCurrentUrl={setCurrentUrl}/>
+        <Popup
+            error={error}
+            loading={loading}
+            endorsements={endorsements}
+            url={currentUrl}
+            setCurrentUrl={setCurrentUrl}
+        />
     );
 }
 
