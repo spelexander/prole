@@ -15,12 +15,7 @@
     "jsx": "react-jsx",
     "composite": true,
     "skipLibCheck": true,
-    "noEmit": true
+    "noEmit": true,
   },
-  "references": [
-    {
-      "path": "../model",
-    }
-  ],
   "include": ["./src"]
 }

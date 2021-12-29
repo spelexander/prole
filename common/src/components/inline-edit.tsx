@@ -1,25 +1,40 @@
-import React, { useCallback, useEffect, useState } from 'react'
+import React, {
+  useCallback,
+  useEffect,
+  useState,
+  useMemo,
+  CSSProperties,
+} from 'react'
 import TextField from '@material-ui/core/TextField'
 import Typography from '@material-ui/core/Typography'
 import Button from '@material-ui/core/Button'
 import { getHostName } from '../utils'
 
-export interface InlineEditProps {
-  initialValue: string
-  onChanged: (value: string) => void
-  width: number
-  startEdit: boolean
+const editStyle: CSSProperties = {
+  flexGrow: 1,
+  fontSize: '16px',
 }
 
-const style = {
+const buttonStyle: CSSProperties = {
   textTransform: 'none',
-  alignContext: 'center',
+  flexGrow: 1,
+  fontSize: '16px',
+  whiteSpace: 'nowrap',
+  overflow: 'hidden',
+  textOverflow: 'ellipsis',
+  maxHeight: '45px',
+  marginTop: '5px',
+}
+
+export interface InlineEditProps {
+  initialValue: string | null
+  onChanged: (value: string) => void
+  startEdit?: boolean
 }
 
 export const InlineEdit: React.FC<InlineEditProps> = ({
   initialValue,
   onChanged,
-  width,
   startEdit,
 }) => {
   const [editing, setEditing] = useState(startEdit)
@@ -45,10 +60,24 @@ export const InlineEdit: React.FC<InlineEditProps> = ({
     }
   }, [])
 
+  const startEditing = useCallback(() => {
+    setEditing(true)
+  }, [])
+
+  const onBlur = useCallback(() => {
+    setEditing(false)
+  }, [])
+
+  const displayStyle: CSSProperties = useMemo(
+    () => ({ ...buttonStyle, marginBottom: '4px', marginLeft: '6px' }),
+    [buttonStyle]
+  )
+
   if (editing) {
     return (
       <TextField
-        style={{ ...style, width: `${width}px` }}
+        style={editStyle}
+        onBlur={onBlur}
         variant="outlined"
         onKeyDown={onKeyDown}
         margin="dense"
@@ -58,18 +87,8 @@ export const InlineEdit: React.FC<InlineEditProps> = ({
   }
 
   return (
-    <Button
-      style={{ ...style, width }}
-      onClick={() => {
-        setEditing(true)
-      }}
-    >
-      <Typography
-        style={{ alignContext: 'center', fontSize: '16px' }}
-        align="left"
-        variant="h3"
-        display="block"
-      >
+    <Button style={buttonStyle} onClick={startEditing}>
+      <Typography style={displayStyle} align="left" display="block">
         {value}
       </Typography>
     </Button>
@@ -77,6 +96,5 @@ export const InlineEdit: React.FC<InlineEditProps> = ({
 }
 
 InlineEdit.defaultProps = {
-  width: 380,
   startEdit: false,
 }

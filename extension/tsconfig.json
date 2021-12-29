@@ -12,12 +12,15 @@
     "moduleResolution": "Node",
     "resolveJsonModule": true,
     "isolatedModules": true,
+    "noEmit": true,
     "jsx": "react-jsx",
-    "composite": true,
+    "types": ["vite/client", "chrome"],
     "skipLibCheck": true,
-    "noEmit": true
   },
   "references": [
+    {
+      "path": "../common"
+    },
     {
       "path": "../model",
     }

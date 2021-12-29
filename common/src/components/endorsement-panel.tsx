@@ -1,10 +1,9 @@
 import React, { useState, useCallback } from 'react'
-import { Endorsement } from '../types'
 import Typography from '@material-ui/core/Typography'
 import { ReferencesPanel } from './references-panel'
-import { EndorsementItem, EndorsementItemSkeleton } from './endorsement'
+import { EndorsementItem, EndorsementItemSkeleton } from './endorsement-item'
 import { EmptyHelpText } from './empty-help-text'
-import { makeStyles } from '@mui/styles'
+import { Endorsement } from '@prole/model'
 
 export interface EndorsementPanelProps {
   loading: boolean
@@ -12,21 +11,15 @@ export interface EndorsementPanelProps {
   endorsements: { Id: Endorsement } | null
 }
 
-const useStyles = makeStyles({
-  errorMessage: {
-    fontSize: '20px',
-    width: '100%',
-    marginTop: '20px',
-  },
-})
+const errorContent = { fontSize: '20px', width: '100%', marginTop: '20px' }
+
+const errorContainer = { marginTop: '10px' }
 
 export const EndorsementPanel: React.FC<EndorsementPanelProps> = ({
   loading,
   error,
   endorsements,
 }) => {
-  const styles = useStyles()
-
   const [selectedEndorsement, setSelectedEndorsement] =
     useState<Endorsement | null>(null)
 
@@ -37,9 +30,8 @@ export const EndorsementPanel: React.FC<EndorsementPanelProps> = ({
   if (loading) {
     return (
       <>
-        {Array(2).map(() => (
-          <EndorsementItemSkeleton />
-        ))}
+        <EndorsementItemSkeleton />
+        <EndorsementItemSkeleton />
       </>
     )
   }
@@ -55,12 +47,7 @@ export const EndorsementPanel: React.FC<EndorsementPanelProps> = ({
 
   if (error || endorsements === null) {
     return (
-      <Typography
-        className={styles.errorMessage}
-        align="center"
-        variant="h6"
-        display="block"
-      >
+      <Typography style={errorContent} align="center" variant="h6">
         Something's gone wrong, try refreshing.
       </Typography>
     )
@@ -71,13 +58,13 @@ export const EndorsementPanel: React.FC<EndorsementPanelProps> = ({
   }
 
   return (
-    <>
+    <div style={errorContainer}>
       {Object.values(endorsements).map((endorsement) => (
         <EndorsementItem
           endorsement={endorsement}
           selectEndorsement={setSelectedEndorsement}
         />
       ))}
-    </>
+    </div>
   )
 }

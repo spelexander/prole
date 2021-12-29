@@ -1,31 +1,31 @@
-import React from 'react'
+import React, { useMemo } from 'react'
 
 import './prole-title.css'
 import Typography from '@material-ui/core/Typography'
-import { makeStyles } from '@mui/styles'
 
 export interface ProleTitleProps {
-  size: number
-  weight: number
+  size?: number
+  weight?: number
 }
 
-const useStyles = makeStyles({
-  proleTitle: ({ size, weight }: ProleTitleProps) => ({
-    color: 'black',
-    marginTop: '30px',
-    marginRight: '25px',
-    marginLeft: 'auto',
-    fontSize: size,
-    fontWeight: weight,
-  }),
-})
-
 export const ProleTitle: React.FC<ProleTitleProps> = (props) => {
-  const styles = useStyles(props)
+  const proleTitleStyle = useMemo(
+    () => ({
+      fontSize: `${props.size}px`,
+      fontWeight: props.weight,
+      color: 'black',
+      marginTop: '30px',
+      marginRight: '25px',
+      marginLeft: 'auto',
+      marginBottom: 0,
+    }),
+    [props.size, props.weight]
+  )
+
   return (
     <Typography
-      className={`text-pop-up-top ${styles.proleTitle}`}
-      variant="h1"
+      style={proleTitleStyle}
+      className={`text-pop-up-top`}
       display="block"
     >
       Prole.

@@ -8,11 +8,17 @@
   "private": true,
   "workspaces": [
     "landing-page",
+    "model",
     "extension",
     "common",
     "server"
   ],
   "scripts": {
+    "start:ext": "yarn workspace @prole/extension start",
+    "start:landing": "yarn workspace @prole/landing-page start",
+    "build:ext": "yarn workspace @prole/extension build",
+    "build:landing": "yarn workspace @prole/landing-page build",
+    "test": "jest",
     "lint": "yarn eslint && yarn pretty-quick --staged"
   },
   "devDependencies": {

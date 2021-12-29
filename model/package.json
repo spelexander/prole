@@ -1,0 +1,10 @@
+{
+  "name": "@prole/model",
+  "version": "1.0.0",
+  "main": "src/index.ts",
+  "license": "MIT",
+  "private": true,
+  "devDependencies": {
+    "typescript": "^4.4.4"
+  }
+}
