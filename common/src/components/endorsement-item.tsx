@@ -1,4 +1,4 @@
-import React, { useMemo, CSSProperties } from 'react'
+import React, { useMemo, CSSProperties, useCallback } from 'react'
 import Typography from '@material-ui/core/Typography'
 import { ColorSquare } from './color-square'
 import Paper from '@material-ui/core/Paper'
@@ -7,12 +7,19 @@ import type { Endorsement } from '@prole/model'
 import { Level } from '@prole/model'
 import { colors } from '../constants'
 
+import './endorsement-item.css'
+import { Avatar } from '@material-ui/core'
+
 export interface EndorsementItemProps {
   selectEndorsement: (endorsement: Endorsement) => void
   endorsement: Endorsement
 }
 
-const container: CSSProperties = { display: 'flex', margin: '5px' }
+const container: CSSProperties = {
+  display: 'flex',
+  margin: '5px',
+  cursor: 'pointer',
+}
 const textBox: CSSProperties = {
   marginLeft: '15px',
   marginTop: '5px',
@@ -40,7 +47,7 @@ export const EndorsementItem: React.FC<EndorsementItemProps> = ({
   endorsement,
 }) => {
   const { endorsee, level, references } = endorsement
-  const { name, url, color } = endorsee
+  const { name, url } = endorsee
 
   const { referenceSummary, lastReferenceDate } = useMemo(() => {
     if (!references || references.length <= 0) {
@@ -60,32 +67,29 @@ export const EndorsementItem: React.FC<EndorsementItemProps> = ({
     }
   }, [references])
 
+  const onClick = useCallback(
+    () => selectEndorsement(endorsement),
+    [endorsement, selectEndorsement]
+  )
+
   return (
-    <Paper style={container} onClick={() => selectEndorsement(endorsement)}>
-      <ColorSquare color={color} level={level} />
+    <Paper style={container} onClick={onClick} className="endorsement-item">
+      {/* <Avatar */}
+      {/*   variant="rounded" */}
+      {/* /> */}
       <div style={textBox}>
-        <Typography style={title} align="left" variant="button" display="block">
+        <Typography style={title} align="left" display="block">
           <a href={url} target="_blank" rel="noopener noreferrer">
             {name}
           </a>
         </Typography>
-        <Typography
-          style={description}
-          align="left"
-          variant="button"
-          display="block"
-        >
+        <Typography style={description} align="left" display="block">
           {`${level} endorsement`}
         </Typography>
       </div>
       <div style={reference}>
-        <Typography
-          style={referenceContent}
-          align="left"
-          variant="button"
-          display="block"
-        >
-          {`Last endorsed: ${new Date(lastReferenceDate.date).toDateString()}`}
+        <Typography style={referenceContent} align="left" display="block">
+          {new Date(lastReferenceDate.date).toDateString()}
           <br />
           {referenceSummary}
         </Typography>

@@ -40,6 +40,8 @@ export const Popup = () => {
         return
       }
 
+      console.log('fetching', import.meta.env.VITE_APP_SERVER_URL)
+
       if (url) {
         setLoading(true)
         try {
@@ -71,14 +73,18 @@ export const Popup = () => {
 
   return (
     <div style={popupStyle}>
-      <Header url={url} setCurrentUrl={setUrl} homeLinkUrl={''} />
+      <Header
+        url={url}
+        setCurrentUrl={setUrl}
+        homeLinkUrl={`${import.meta.env.VITE_APP_HOME_URL}`}
+      />
       <Divider style={dividerStyle} />
       <EndorsementPanel
         error={error}
         endorsements={endorsements}
         loading={loading}
       />
-      <Controls helpUrl={''} />
+      <Controls helpUrl={`${import.meta.env.VITE_APP_HELP_URL}`} />
     </div>
   )
 }

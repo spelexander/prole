@@ -1,0 +1,5 @@
+
+.endorsement-item:hover {
+    background: #efefef;
+    transition: background-color 0.3s linear;
+}

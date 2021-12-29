@@ -34,12 +34,8 @@ export const ColorSquare: React.FC<ColourSquareProps> = ({ color, level }) => {
             ...roundedButton,
             secondary,
           },
-    [level]
+    [level, color]
   )
 
   return <div style={style} />
-}
-
-ColorSquare.defaultProps = {
-  color: '#ebebeb',
 }
