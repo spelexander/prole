@@ -10,11 +10,6 @@ import Typography from '@material-ui/core/Typography'
 import Button from '@material-ui/core/Button'
 import { getHostName } from '../utils'
 
-const editStyle: CSSProperties = {
-  flexGrow: 1,
-  fontSize: '16px',
-}
-
 const buttonStyle: CSSProperties = {
   textTransform: 'none',
   flexGrow: 1,
@@ -30,12 +25,14 @@ export interface InlineEditProps {
   initialValue: string | null
   onChanged: (value: string) => void
   startEdit?: boolean
+  width?: string
 }
 
 export const InlineEdit: React.FC<InlineEditProps> = ({
   initialValue,
   onChanged,
   startEdit,
+  width,
 }) => {
   const [editing, setEditing] = useState(startEdit)
   const [value, setValue] = useState(initialValue)
@@ -64,20 +61,29 @@ export const InlineEdit: React.FC<InlineEditProps> = ({
     setEditing(true)
   }, [])
 
-  const onBlur = useCallback(() => {
-    setEditing(false)
-  }, [])
+  const editStyle: CSSProperties = useMemo(
+    () => ({
+      ...(width ? { width } : {}),
+      flexGrow: 1,
+      fontSize: '16px',
+    }),
+    [width]
+  )
 
   const displayStyle: CSSProperties = useMemo(
-    () => ({ ...buttonStyle, marginBottom: '4px', marginLeft: '6px' }),
-    [buttonStyle]
+    () => ({
+      ...buttonStyle,
+      marginBottom: '4px',
+      marginLeft: '6px',
+      ...(width ? { width } : {}),
+    }),
+    [buttonStyle, width]
   )
 
   if (editing) {
     return (
       <TextField
         style={editStyle}
-        onBlur={onBlur}
         variant="outlined"
         onKeyDown={onKeyDown}
         margin="dense"
