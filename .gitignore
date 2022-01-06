@@ -49,8 +49,8 @@ dist-ssr
 **/dist
 server/transpiled
 server/wrangler.toml
-.idea/
-.idea/vcs.xml
+server/.cargo-ok
+.idea
 
 # builds to be removed later
 old/prole-site-fe/build
