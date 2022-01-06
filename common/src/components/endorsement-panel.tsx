@@ -8,7 +8,7 @@ import { Endorsement } from '@prole/model'
 export interface EndorsementPanelProps {
   loading: boolean
   error: string | null
-  endorsements: { Id: Endorsement } | null
+  endorsements: Endorsement[] | null
 }
 
 const errorContent = { fontSize: '20px', width: '100%', marginTop: '20px' }
@@ -45,7 +45,11 @@ export const EndorsementPanel: React.FC<EndorsementPanelProps> = ({
     )
   }
 
-  if (error || endorsements === null) {
+  if (endorsements === null) {
+    return null
+  }
+
+  if (error) {
     return (
       <Typography style={errorContent} align="center" variant="h6">
         Something's gone wrong, try refreshing.
@@ -53,7 +57,7 @@ export const EndorsementPanel: React.FC<EndorsementPanelProps> = ({
     )
   }
 
-  if (Object.keys(endorsements).length === 0) {
+  if (endorsements.length === 0) {
     return <EmptyHelpText />
   }
 
@@ -61,6 +65,7 @@ export const EndorsementPanel: React.FC<EndorsementPanelProps> = ({
     <div style={errorContainer}>
       {Object.values(endorsements).map((endorsement) => (
         <EndorsementItem
+          key={endorsement.party.id}
           endorsement={endorsement}
           selectEndorsement={setSelectedEndorsement}
         />

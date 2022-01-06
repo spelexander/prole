@@ -1,2 +1,8 @@
-export type { Endorsement, Endorsee, Id, Reference } from './types'
-export { Level } from './types'
+export type {
+  Endorsement,
+  Party,
+  Id,
+  Reference,
+  EndorsementResponse,
+  Source,
+} from './types'

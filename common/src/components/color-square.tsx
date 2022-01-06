@@ -1,41 +1,43 @@
 import React, { useMemo } from 'react'
-import { Level } from '@prole/model'
 
 export interface ColourSquareProps {
   color: string
-  level: Level
+  size?: 'small' | 'large'
 }
 
 const roundedButton = {
   borderRadius: '5px',
 }
-const primary = {
+const large = {
   width: '48px',
   height: '48px',
-  margin: '10px',
-}
-const secondary = {
-  width: '22px',
-  height: '22px',
-  margin: '22px',
 }
 
-export const ColorSquare: React.FC<ColourSquareProps> = ({ color, level }) => {
+const small = {
+  width: '22px',
+  height: '22px',
+}
+
+export const ColorSquare: React.FC<ColourSquareProps> = ({ color, size }) => {
   const style = useMemo(
     () =>
-      level === Level.primary
+      size === 'large'
         ? {
             backgroundColor: color,
             ...roundedButton,
-            ...primary,
+            ...large,
           }
         : {
             backgroundColor: color,
             ...roundedButton,
-            secondary,
+            small,
           },
-    [level, color]
+    [size, color]
   )
 
   return <div style={style} />
+}
+
+ColorSquare.defaultProps = {
+  size: 'large',
 }

@@ -45,3 +45,14 @@ node_modules
 dist
 dist-ssr
 *.local
+
+**/dist
+server/transpiled
+server/wrangler.toml
+.idea/
+.idea/vcs.xml
+
+# builds to be removed later
+old/prole-site-fe/build
+old/backend/fe-build
+

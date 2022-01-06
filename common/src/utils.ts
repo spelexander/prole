@@ -1,17 +1,36 @@
 export const truncate = (input: string, size: number) =>
   input.length > size ? `${input.substring(0, size)}...` : input
 
+/**
+ * Validates a domain name entry excluding protocol prefix
+ */
 export const isValidDomainName = (url: string) =>
-  url &&
-  /^[a-zA-Z0-9][a-zA-Z0-9-]{1,61}[a-zA-Z0-9](?:\.[a-zA-Z]{2,})+$/.test(url)
+  Boolean(
+    url &&
+      /^[a-zA-Z0-9][a-zA-Z0-9-]{1,61}[a-zA-Z0-9](?:\.[a-zA-Z]{2,})+$/.test(url)
+  )
 
-export const getHostName = (url: string) => {
+/**
+ * Parses the hostname from the url
+ */
+export const parseHostName = (url: string) => {
   if (!url) {
     return null
   }
 
-  const matches = url.match(/^https?:\/\/([^/?#]+)(?:[/?#]|$)/i)
-  // extract hostname (will be null if no match is found)
+  let parsedUrl = url.trim()
+  // no protocol add it for the regex
+  if (
+    !url.startsWith('http') &&
+    !url.startsWith('ftp') &&
+    !url.startsWith('ws')
+  ) {
+    parsedUrl = `https://${url}`
+  }
 
-  return (matches && matches[1]) || url
+  try {
+    return new URL(parsedUrl).hostname
+  } catch (e) {
+    return null
+  }
 }

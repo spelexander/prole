@@ -16,8 +16,11 @@
   "scripts": {
     "start:ext": "yarn workspace @prole/extension start",
     "start:landing": "yarn workspace @prole/landing-page start",
+    "start:server": "yarn workspace @prole/server start",
     "build:ext": "yarn workspace @prole/extension build",
     "build:landing": "yarn workspace @prole/landing-page build",
+    "build:server": "yarn workspace @prole/server build",
+    "deploy:server": "yarn workspace @prole/server deploy",
     "test": "jest",
     "lint": "yarn eslint && yarn pretty-quick --staged"
   },

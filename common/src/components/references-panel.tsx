@@ -1,9 +1,18 @@
-import React, { useCallback } from 'react'
-import Typography from '@material-ui/core/Typography'
+import React, { useCallback, useMemo } from 'react'
 import Button from '@material-ui/core/Button'
 import CloseIcon from '@material-ui/icons/Close'
 import { truncate } from '../utils'
 import { Reference } from '@prole/model'
+import {
+  Timeline,
+  TimelineItem,
+  TimelineOppositeContent,
+  TimelineSeparator,
+  TimelineDot,
+  TimelineConnector,
+  TimelineContent,
+} from '@mui/lab'
+import { Typography } from '@mui/material'
 
 export interface ReferencesPanel {
   hideReferences: () => void
@@ -13,29 +22,45 @@ export interface ReferencesPanel {
 const hideButton = {
   marginLeft: '10px',
 }
-const list = {
-  marginTop: '10px',
-}
-const title = {
-  marginLeft: '20px',
+
+const style = {
+  fontWeight: 100,
 }
 
 export const ReferencesPanel: React.FC<ReferencesPanel> = ({
   hideReferences,
   references,
 }) => {
+  const sortedReferences = useMemo(
+    () =>
+      references.sort((a, b) => {
+        if (a.date > b.date) {
+          return -1
+        } else if (a.date < b.date) {
+          return 1
+        } else {
+          return 0
+        }
+      }),
+    [references]
+  )
+
   const refToText = useCallback(
-    (ref) => (
-      <Typography style={title}>
-        <a href={ref.url} target="_blank" rel="noopener noreferrer">
-          {truncate(ref.title, 40)}
-        </a>
-        {' - '}
-        {ref.author}
-        {'   '}
-        {ref.date}
-        <br />
-      </Typography>
+    (reference) => (
+      <TimelineItem key={reference.id}>
+        <TimelineOppositeContent style={style} color="text.secondary">
+          {`${new Date(reference.date).toDateString()}`}
+        </TimelineOppositeContent>
+        <TimelineSeparator>
+          <TimelineDot />
+          <TimelineConnector />
+        </TimelineSeparator>
+        <TimelineContent style={style}>
+          <a href={reference.link} target="_blank" rel="noopener noreferrer">
+            {truncate(reference.name, 40)}
+          </a>
+        </TimelineContent>
+      </TimelineItem>
     ),
     []
   )
@@ -45,7 +70,7 @@ export const ReferencesPanel: React.FC<ReferencesPanel> = ({
       <Button style={hideButton} onClick={hideReferences}>
         <CloseIcon />
       </Button>
-      <div style={list}>{references.map(refToText)}</div>
+      <Timeline>{sortedReferences.map(refToText)}</Timeline>
     </>
   )
 }

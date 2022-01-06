@@ -23,8 +23,6 @@ export const Popup = () => {
   const [loading, setLoading] = useState<boolean>(true)
   const [error, setError] = useState<string | null>(null)
 
-  console.log(loading, error, url, endorsements)
-
   useEffect(() => {
     chrome.tabs.query({ active: true, lastFocusedWindow: true }, (tabs) => {
       const [{ url }] = tabs
@@ -39,8 +37,6 @@ export const Popup = () => {
       if (aborted) {
         return
       }
-
-      console.log('fetching', import.meta.env.VITE_APP_SERVER_URL)
 
       if (url) {
         setLoading(true)

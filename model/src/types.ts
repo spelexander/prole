@@ -1,26 +1,43 @@
-export enum Level {
-  primary = 'primary',
-  secondary = 'secondary',
-}
-
-// nano id
 export type Id = string
 
-export interface Endorsee {
-  endorseeId: Id
+export interface Party {
+  id: Id
   name: string
-  url: string
+  link: string
+  imageUrl: string
 }
 
 export interface Reference {
+  id: Id
   author: string
   date: number
-  url: string
+  link: string
+  name: string
 }
 
 export interface Endorsement {
-  id: Id
-  endorsee: Endorsee
-  level: Level
+  party: Party
   references: Reference[]
 }
+
+export interface EndorsementResponse {
+  endorsements: Endorsement[]
+  source: Source
+}
+
+export interface Source {
+  id: Id
+  domain: string
+  name: string
+  link: string
+}
+
+export type Result<T> =
+  | {
+      data: T
+      error: null
+    }
+  | {
+      data: null
+      error: string
+    }

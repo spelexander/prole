@@ -28,6 +28,9 @@
     },
     {
       "path": "./landing-page"
+    },
+    {
+      "path": "./server"
     }
   ],
   "include": ["**/src"]

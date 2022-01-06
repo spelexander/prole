@@ -8,18 +8,7 @@ import React, {
 import TextField from '@material-ui/core/TextField'
 import Typography from '@material-ui/core/Typography'
 import Button from '@material-ui/core/Button'
-import { getHostName } from '../utils'
-
-const buttonStyle: CSSProperties = {
-  textTransform: 'none',
-  flexGrow: 1,
-  fontSize: '16px',
-  whiteSpace: 'nowrap',
-  overflow: 'hidden',
-  textOverflow: 'ellipsis',
-  maxHeight: '45px',
-  marginTop: '5px',
-}
+import { parseHostName, isValidDomainName } from '../utils'
 
 export interface InlineEditProps {
   initialValue: string | null
@@ -36,11 +25,16 @@ export const InlineEdit: React.FC<InlineEditProps> = ({
 }) => {
   const [editing, setEditing] = useState(startEdit)
   const [value, setValue] = useState(initialValue)
+  const [valid, setValid] = useState<boolean>(true)
 
   useEffect(() => {
     if (initialValue !== value) {
       if (initialValue) {
         setValue(initialValue)
+
+        if (initialValue) {
+          setEditing(false)
+        }
       }
     }
   }, [initialValue])
@@ -48,13 +42,18 @@ export const InlineEdit: React.FC<InlineEditProps> = ({
   const onKeyDown = useCallback((e) => {
     let newValue = e.target.value
 
-    newValue = getHostName(newValue)
-
-    if (e.key === 'Enter' && newValue) {
+    newValue = parseHostName(newValue)
+    if (e.key === 'Enter' && newValue && isValidDomainName(newValue)) {
       setValue(newValue)
       onChanged(newValue)
       setEditing(false)
     }
+  }, [])
+
+  const onChange = useCallback((e) => {
+    let newValue = e.target.value
+    const hostName = parseHostName(newValue)
+    setValid(Boolean(hostName && isValidDomainName(hostName)))
   }, [])
 
   const startEditing = useCallback(() => {
@@ -66,6 +65,24 @@ export const InlineEdit: React.FC<InlineEditProps> = ({
       ...(width ? { width } : {}),
       flexGrow: 1,
       fontSize: '16px',
+      fontWeight: 100,
+    }),
+    [width]
+  )
+
+  const buttonStyle: CSSProperties = useMemo(
+    () => ({
+      ...(width ? { width } : {}),
+      textTransform: 'none',
+      flexGrow: 1,
+      fontSize: '16px',
+      fontWeight: 100,
+      whiteSpace: 'nowrap',
+      overflow: 'hidden',
+      textOverflow: 'ellipsis',
+      maxHeight: '45px',
+      marginTop: '5px',
+      marginBottom: '2px',
     }),
     [width]
   )
@@ -83,9 +100,13 @@ export const InlineEdit: React.FC<InlineEditProps> = ({
   if (editing) {
     return (
       <TextField
+        inputProps={{ style: editStyle }}
+        autoFocus
+        error={!valid}
         style={editStyle}
         variant="outlined"
         onKeyDown={onKeyDown}
+        onChange={onChange}
         margin="dense"
         defaultValue={value}
       />

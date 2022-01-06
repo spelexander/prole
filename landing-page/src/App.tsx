@@ -11,6 +11,14 @@ const wrapperStyle = {
   display: 'flex',
 }
 
+const containerStyle = {
+  marginTop: '150px',
+  maxWidth: '500px',
+  minWidth: '400px',
+}
+
+const divider = { margin: '20px' }
+
 function App() {
   return (
     <div style={wrapperStyle}>
@@ -21,17 +29,11 @@ function App() {
         }}
       >
         <ProleTitle size={60} weight={100} />
-        <div
-          style={{
-            marginTop: '150px',
-            width: '400px',
-          }}
-        >
+        <div style={containerStyle}>
           <Try />
-          <Divider style={{ margin: '20px' }} />
           <Overview />
-          <Divider style={{ margin: '20px' }} />
-          <Data />
+          {/* <Divider style={divider} /> */}
+          {/* <Data /> */}
         </div>
       </div>
     </div>

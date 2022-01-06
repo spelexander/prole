@@ -6,4 +6,6 @@ export { EndorsementPanel } from './components/endorsement-panel'
 export { EndorsementItem } from './components/endorsement-item'
 export { EmptyHelpText } from './components/empty-help-text'
 
-export { getHostName, isValidDomainName } from './utils'
+export { parseHostName, isValidDomainName } from './utils'
+
+export { colors } from './constants'

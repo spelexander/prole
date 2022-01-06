@@ -3,11 +3,13 @@ import Typography from '@material-ui/core/Typography'
 
 const title = {
   fontSize: '20px',
+  fontWeight: 100,
   width: '100%',
   marginTop: '20px',
 }
 const description = {
   fontSize: '11px',
+  fontWeight: 100,
   marginLeft: '30px',
   marginRight: '30px',
   marginTop: '20px',

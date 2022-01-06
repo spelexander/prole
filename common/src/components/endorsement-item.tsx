@@ -4,7 +4,6 @@ import { ColorSquare } from './color-square'
 import Paper from '@material-ui/core/Paper'
 import Skeleton from '@mui/material/Skeleton'
 import type { Endorsement } from '@prole/model'
-import { Level } from '@prole/model'
 import { colors } from '../constants'
 
 import './endorsement-item.css'
@@ -22,14 +21,13 @@ const container: CSSProperties = {
 }
 const textBox: CSSProperties = {
   marginLeft: '15px',
-  marginTop: '5px',
+  marginTop: '10px',
 }
 const title: CSSProperties = {
   fontSize: '18px',
+  fontWeight: 100,
 }
-const description: CSSProperties = {
-  fontSize: '11px',
-}
+
 const reference: CSSProperties = {
   marginLeft: 'auto',
   order: 2,
@@ -40,31 +38,38 @@ const referenceContent: CSSProperties = {
   fontSize: '12px',
   marginTop: '5px',
   marginBottom: '5px',
+  whiteSpace: 'initial',
+}
+
+const imageStyle: CSSProperties = {
+  width: '48px',
+  height: '48px',
+  margin: '5px',
 }
 
 export const EndorsementItem: React.FC<EndorsementItemProps> = ({
   selectEndorsement,
   endorsement,
 }) => {
-  const { endorsee, level, references } = endorsement
-  const { name, url } = endorsee
+  const { party, references } = endorsement
+  const { name, link, imageUrl } = party
 
-  const { referenceSummary, lastReferenceDate } = useMemo(() => {
-    if (!references || references.length <= 0) {
-      throw new Error('References must be provided.')
-    }
+  const yearsActive = useMemo(() => {
+    const years = new Set(
+      references
+        .sort((a, b) => {
+          if (a.date > b.date) {
+            return 1
+          } else if (a.date < b.date) {
+            return -1
+          } else {
+            return 0
+          }
+        })
+        .map((reference) => new Date(reference.date).getFullYear())
+    )
 
-    let referenceSummary = 'Multiple authors'
-
-    const authors = new Set(references.map((ref) => ref.author))
-    if (authors.size === 1) {
-      ;[referenceSummary] = authors
-    }
-
-    return {
-      referenceSummary,
-      lastReferenceDate: references[references.length - 1],
-    }
+    return [...years].join(', ')
   }, [references])
 
   const onClick = useCallback(
@@ -72,52 +77,62 @@ export const EndorsementItem: React.FC<EndorsementItemProps> = ({
     [endorsement, selectEndorsement]
   )
 
+  const onLinkClick = useCallback((e) => e.stopPropagation(), [])
+
   return (
     <Paper style={container} onClick={onClick} className="endorsement-item">
-      {/* <Avatar */}
-      {/*   variant="rounded" */}
-      {/* /> */}
+      {imageUrl && (
+        <Avatar style={imageStyle} variant="rounded" src={imageUrl} />
+      )}
       <div style={textBox}>
         <Typography style={title} align="left" display="block">
-          <a href={url} target="_blank" rel="noopener noreferrer">
+          <a
+            href={link}
+            target="_blank"
+            rel="noopener noreferrer"
+            onClick={onLinkClick}
+          >
             {name}
           </a>
-        </Typography>
-        <Typography style={description} align="left" display="block">
-          {`${level} endorsement`}
         </Typography>
       </div>
       <div style={reference}>
         <Typography style={referenceContent} align="left" display="block">
-          {new Date(lastReferenceDate.date).toDateString()}
-          <br />
-          {referenceSummary}
+          {yearsActive}
         </Typography>
       </div>
     </Paper>
   )
 }
 
-const skeletonStyle: CSSProperties = { marginTop: '10px', borderRadius: '2px' }
+const skeletonStyle: CSSProperties = {
+  marginTop: '10px',
+  borderRadius: '2px',
+}
+
+const avatarSkeletonStyle: CSSProperties = {
+  marginTop: '10px',
+  borderRadius: '2px',
+  margin: '5px',
+}
 
 export const EndorsementItemSkeleton: React.FC = () => {
   return (
     <Paper style={container}>
-      <ColorSquare color={colors.loading} level={Level.primary} />
+      <Skeleton
+        style={avatarSkeletonStyle}
+        animation="wave"
+        variant="rectangular"
+        width={48}
+        height={48}
+      />
       <div style={textBox}>
         <Skeleton
           animation="wave"
           style={skeletonStyle}
           variant="rectangular"
-          width={150}
-          height={12}
-        />
-        <Skeleton
-          animation="wave"
-          style={skeletonStyle}
-          variant="rectangular"
-          width={150}
-          height={12}
+          width={190}
+          height={15}
         />
       </div>
     </Paper>
