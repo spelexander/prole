@@ -1,10 +1,8 @@
 import React, { useMemo, CSSProperties, useCallback } from 'react'
 import Typography from '@material-ui/core/Typography'
-import { ColorSquare } from './color-square'
 import Paper from '@material-ui/core/Paper'
 import Skeleton from '@mui/material/Skeleton'
 import type { Endorsement } from '@prole/model'
-import { colors } from '../constants'
 
 import './endorsement-item.css'
 import { Avatar } from '@material-ui/core'
@@ -82,7 +80,12 @@ export const EndorsementItem: React.FC<EndorsementItemProps> = ({
   return (
     <Paper style={container} onClick={onClick} className="endorsement-item">
       {imageUrl && (
-        <Avatar style={imageStyle} variant="rounded" src={imageUrl} />
+        <Avatar
+          style={imageStyle}
+          variant="rounded"
+          src={imageUrl}
+          alt={name}
+        />
       )}
       <div style={textBox}>
         <Typography style={title} align="left" display="block">

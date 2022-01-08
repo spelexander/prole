@@ -9,6 +9,7 @@ import TextField from '@material-ui/core/TextField'
 import Typography from '@material-ui/core/Typography'
 import Button from '@material-ui/core/Button'
 import { parseHostName, isValidDomainName } from '../utils'
+import { useDebouncedCallback } from 'use-debounce'
 
 export interface InlineEditProps {
   initialValue: string | null
@@ -39,7 +40,7 @@ export const InlineEdit: React.FC<InlineEditProps> = ({
     }
   }, [initialValue])
 
-  const onKeyDown = useCallback((e) => {
+  const onKeyDown = useDebouncedCallback((e) => {
     let newValue = e.target.value
 
     newValue = parseHostName(newValue)
@@ -48,13 +49,13 @@ export const InlineEdit: React.FC<InlineEditProps> = ({
       onChanged(newValue)
       setEditing(false)
     }
-  }, [])
+  })
 
-  const onChange = useCallback((e) => {
+  const onChange = useDebouncedCallback((e) => {
     let newValue = e.target.value
     const hostName = parseHostName(newValue)
     setValid(Boolean(hostName && isValidDomainName(hostName)))
-  }, [])
+  })
 
   const startEditing = useCallback(() => {
     setEditing(true)
@@ -101,6 +102,7 @@ export const InlineEdit: React.FC<InlineEditProps> = ({
     return (
       <TextField
         inputProps={{ style: editStyle }}
+        fullWidth
         autoFocus
         error={!valid}
         style={editStyle}

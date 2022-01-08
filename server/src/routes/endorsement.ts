@@ -2,7 +2,6 @@ import { contain } from '../utils'
 import { IttyRequest } from '../types'
 import {
   createEndorsement,
-  DUPLICATE_ENDORSEMENT,
   EndorsementCreate,
   MISSING_PARTY_OR_SOURCE_ERROR_MESSAGE,
 } from '../database/create-endorsement'
@@ -37,10 +36,6 @@ export const getEndorsement = async (request: IttyRequest) => {
   if (error) {
     if (error === MISSING_DOMAIN) {
       return response(404, { messages: [error] })
-    }
-
-    if (error === DUPLICATE_ENDORSEMENT) {
-      return response(400, { messages: [error] })
     }
 
     return response(500, { errors: [error] })

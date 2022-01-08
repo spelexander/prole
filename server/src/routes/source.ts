@@ -7,6 +7,7 @@ import {
   SourceCreate,
 } from '../database/create-source'
 import { response } from './utils'
+import { listSources } from '../database/list-sources'
 
 /**
  * Adds a new source authoring/donating entity (e.g. company, organisation, person)
@@ -38,6 +39,21 @@ export const addSource = async (request: IttyRequest) => {
   }
 
   return response(201, data)
+}
+
+/**
+ * Get all news/data sources prole has data for
+ */
+export const sources = async (request: IttyRequest) => {
+  const { faunaClient } = request
+
+  const { error, data } = await contain(() => listSources(faunaClient))
+
+  if (error) {
+    return response(500, { errors: [error] })
+  }
+
+  return response(200, data)
 }
 
 export const validate = ({ link, name, domain }: SourceCreate) => {

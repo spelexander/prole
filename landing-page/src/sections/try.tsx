@@ -9,6 +9,7 @@ import Typography from '@material-ui/core/Typography'
 import { colors, EndorsementPanel, InlineEdit } from '@prole/common'
 import { Endorsement, EndorsementResponse } from '@prole/model'
 import { Button } from '@mui/material'
+import { panelStyle } from '../styles'
 
 const tryPromptInfoStyle: CSSProperties = {
   fontSize: '16',
@@ -21,10 +22,8 @@ const tryPromptStyle: CSSProperties = {
 }
 
 const tryPanelStyle: CSSProperties = {
-  borderRadius: '5px',
-  border: `1px solid ${colors.loading}`,
+  ...panelStyle,
   marginBottom: '50px',
-  padding: '20px',
 }
 
 const exampleButtonStyle: CSSProperties = {

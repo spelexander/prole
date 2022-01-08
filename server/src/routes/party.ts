@@ -2,6 +2,7 @@ import { IttyRequest } from '../types'
 import { contain } from '../utils'
 import { createParty, PartyCreate } from '../database/create-party'
 import { response } from './utils'
+import { listParties } from '../database/list-parties'
 
 /**
  * Creates a new political party which can be endorsed
@@ -27,6 +28,21 @@ export const addParty = async (request: IttyRequest) => {
   }
 
   return response(201, data)
+}
+
+/**
+ * Get all parties prole has data for
+ */
+export const parties = async (request: IttyRequest) => {
+  const { faunaClient } = request
+
+  const { error, data } = await contain(() => listParties(faunaClient))
+
+  if (error) {
+    return response(500, { errors: [error] })
+  }
+
+  return response(200, data)
 }
 
 export const validate = ({ link, name, imageUrl }: PartyCreate) => {

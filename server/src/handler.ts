@@ -1,11 +1,11 @@
 import { Router } from 'itty-router'
 import { addEndorsement, getEndorsement } from './routes/endorsement'
 import faunadb from 'faunadb'
-import { addParty } from './routes/party'
-import { addSource } from './routes/source'
+import { addParty, parties } from './routes/party'
+import { addSource, sources } from './routes/source'
 import { withAuth } from './middleware/with-auth'
 import { IttyRequest } from './types'
-import { headers } from './constants'
+import { response } from './routes/utils'
 
 const router = Router()
 
@@ -25,17 +25,19 @@ const withResources = (request: IttyRequest) => {
   request.workerCache = caches.default as Cache
 }
 
-const defaultHandler = () =>
-  new Response(JSON.stringify({ messages: ['Not found'] }), {
-    status: 404,
-    headers,
-  })
+const defaultHandler = () => response(404, { messages: ['Not found'] })
+const adminHandler = () =>
+  response(200, { messages: ['the provided authentication is valid'] })
 
 router
   .get('/api/endorsement/:domain', withResources, getEndorsement)
   .post('/api/endorsement', withResources, withAuth, addEndorsement)
+  .get('/api/party/all', withResources, parties)
   .post('/api/party', withResources, withAuth, addParty)
+  .get('/api/source/all', withResources, sources)
   .post('/api/source', withResources, withAuth, addSource)
+  .get('/api/admin', withAuth, adminHandler)
+
   /* 404 responses */
   .get('*', defaultHandler)
   .post('*', defaultHandler)
