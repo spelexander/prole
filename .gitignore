@@ -50,7 +50,6 @@ dist-ssr
 server/transpiled
 server/wrangler.toml
 server/.cargo-ok
-.idea
 
 # builds to be removed later
 old/prole-site-fe/build

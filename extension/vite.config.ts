@@ -1,22 +1,16 @@
 import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
-import { resolve, dirname } from 'path'
-import { chromeExtension } from 'rollup-plugin-chrome-extension'
 
 export default defineConfig({
-  // resolve: {
-  //   alias: {
-  //     '@': resolve('src'),
-  //   },
-  // },
-  // build: {
-  //   rollupOptions: {
-  //     input: 'src/manifest.json',
-  //   },
-  // },
+  server: {
+    proxy: {
+      '/api': {
+        target: 'http://localhost:8787',
+        changeOrigin: true,
+        secure: false,
+      },
+    },
+  },
   // @ts-ignore
-  plugins: [
-    react(),
-    // chromeExtension()
-  ],
+  plugins: [react()],
 })

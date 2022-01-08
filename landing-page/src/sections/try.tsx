@@ -6,7 +6,12 @@ import React, {
   useState,
 } from 'react'
 import Typography from '@material-ui/core/Typography'
-import { colors, EndorsementPanel, InlineEdit } from '@prole/common'
+import {
+  colors,
+  EndorsementPanel,
+  InlineEdit,
+  useEndorsements,
+} from '@prole/common'
 import { Endorsement, EndorsementResponse } from '@prole/model'
 import { Button } from '@mui/material'
 import { panelStyle } from '../styles'
@@ -48,9 +53,7 @@ export const Try: React.FC = () => {
     Math.floor(Math.random() * (promptNewsSources.length - 1))
   )
   const [domain, setDomain] = useState<string | null>(null)
-  const [endorsements, setEndorsements] = useState<Endorsement[] | null>(null)
-  const [loading, setLoading] = useState<boolean>(false)
-  const [error, setError] = useState<string | null>(null)
+  const { loading, endorsements, error } = useEndorsements(domain)
 
   // Change the suggested news source every 10 seconds
   useEffect(() => {
@@ -61,48 +64,6 @@ export const Try: React.FC = () => {
 
     return () => clearInterval(timer)
   })
-
-  useEffect(() => {
-    let aborted = false
-
-    const fetchData = async () => {
-      if (aborted) {
-        return
-      }
-
-      try {
-        const response = await fetch(`/api/endorsement/${domain}`)
-
-        if (response.ok) {
-          const { endorsements }: EndorsementResponse = await response.json()
-          setEndorsements(endorsements)
-        } else {
-          switch (response.status) {
-            case 404:
-              // no data for the provided domain
-              setEndorsements([])
-              break
-            case 400:
-            case 500:
-          }
-        }
-        setLoading(false)
-      } catch (e) {
-        setError('Unable to fetch endorsements.')
-      }
-    }
-
-    if (domain) {
-      setLoading(true)
-      fetchData()
-    }
-
-    return () => {
-      aborted = true
-    }
-  }, [domain, setEndorsements, setError])
-
-  const isEmpty = useMemo(() => Boolean(!endorsements), [endorsements])
 
   const promptNewsSource = useMemo(
     () => promptNewsSources[promptIndex],

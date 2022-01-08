@@ -13,7 +13,7 @@ export const isValidDomainName = (url: string) =>
 /**
  * Parses the hostname from the url
  */
-export const parseHostName = (url: string) => {
+export const parseHostName = (url: string | null | void) => {
   if (!url) {
     return null
   }
@@ -29,7 +29,13 @@ export const parseHostName = (url: string) => {
   }
 
   try {
-    return new URL(parsedUrl).hostname
+    const hostName = new URL(parsedUrl).hostname
+
+    if (hostName.startsWith('www.')) {
+      return hostName.substring(4)
+    }
+
+    return hostName
   } catch (e) {
     return null
   }

@@ -1,7 +1,11 @@
 import React, { CSSProperties, useEffect, useState } from 'react'
 import Divider from '@material-ui/core/Divider'
-import { EndorsementPanel, getHostName } from '@prole/common/src'
-import { Endorsement } from '@prole/model'
+import {
+  EndorsementPanel,
+  isValidDomainName,
+  parseHostName,
+  useEndorsements,
+} from '@prole/common'
 import { Header } from './header'
 import { Controls } from './controls'
 
@@ -15,66 +19,38 @@ const dividerStyle: CSSProperties = {
 }
 
 export const Popup = () => {
-  const [url, setUrl] = useState<string | null>(null)
-  const [endorsements, setEndorsements] = useState<{ Id: Endorsement } | null>(
-    null
+  const [domain, setDomain] = useState<string | null>(null)
+  const { loading, endorsements, error } = useEndorsements(
+    domain,
+    `${import.meta.env.VITE_APP_SERVER_URL}`
   )
-
-  const [loading, setLoading] = useState<boolean>(true)
-  const [error, setError] = useState<string | null>(null)
 
   useEffect(() => {
     chrome.tabs.query({ active: true, lastFocusedWindow: true }, (tabs) => {
       const [{ url }] = tabs
-      setUrl(url ? getHostName(url) : null)
-    })
-  }, [])
-
-  useEffect(() => {
-    let aborted = false
-
-    const fetchData = async () => {
-      if (aborted) {
+      if (!url) {
         return
       }
 
-      if (url) {
-        setLoading(true)
-        try {
-          const newEndorsements = await fetch(
-            `${import.meta.env.VITE_APP_SERVER_URL}/prole`,
-            {
-              method: 'POST',
-              headers: {
-                Accept: 'application/json',
-                'Content-Type': 'application/json',
-              },
-              body: JSON.stringify({ hostname: url }),
-            }
-          ).then((res) => res.json())
-          setEndorsements(newEndorsements)
-          setLoading(false)
-        } catch (e) {
-          console.error(e)
-          setError('Unknown client error')
-        }
+      const tabDomainName = parseHostName(url)
+      if (!tabDomainName) {
+        return
       }
-    }
-    fetchData()
 
-    return () => {
-      aborted = true
-    }
-  }, [url])
+      if (isValidDomainName(tabDomainName)) {
+        setDomain(tabDomainName)
+      }
+    })
+  }, [])
 
   return (
     <div style={popupStyle}>
       <Header
-        url={url}
-        setCurrentUrl={setUrl}
+        domain={domain}
+        setCurrentUrl={setDomain}
         homeLinkUrl={`${import.meta.env.VITE_APP_HOME_URL}`}
       />
-      <Divider style={dividerStyle} />
+      {/* <Divider style={dividerStyle} /> */}
       <EndorsementPanel
         error={error}
         endorsements={endorsements}

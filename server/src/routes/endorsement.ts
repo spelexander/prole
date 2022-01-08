@@ -10,15 +10,16 @@ import {
   MISSING_DOMAIN,
 } from '../database/get-endorsements'
 import { response } from './utils'
+import { isValidDomainName, parseHostName } from '@prole/common/src/utils'
 
 /**
  * lookup endorsements for the provided source organisation domain
  */
 export const getEndorsement = async (request: IttyRequest) => {
   const { faunaClient, workerCache } = request
-  const domain = request.params?.domain
+  const domain = parseHostName(request.params?.domain)
 
-  if (!domain) {
+  if (!domain || !isValidDomainName(domain)) {
     return response(400, {
       messages: ['a valid domain name must be provided'],
     })

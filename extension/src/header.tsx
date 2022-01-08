@@ -2,7 +2,7 @@ import React from 'react'
 import { InlineEdit, ProleTitle } from '@prole/common'
 
 export interface HeaderProps {
-  url: string | null
+  domain: string | null
   homeLinkUrl: string
   setCurrentUrl: (url: string) => void
 }
@@ -13,17 +13,18 @@ const headerContainer = {
   display: 'flex',
   marginLeft: '10px',
   marginBottom: 0,
+  marginTop: '10px',
 }
 
 export const Header: React.FC<HeaderProps> = ({
-  url,
+  domain,
   homeLinkUrl,
   setCurrentUrl,
 }) => {
   return (
     <div style={headerContainer}>
       <InlineEdit
-        initialValue={url}
+        initialValue={domain}
         onChanged={setCurrentUrl}
         startEdit={false}
       />

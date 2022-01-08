@@ -8,4 +8,6 @@ export { EmptyHelpText } from './components/empty-help-text'
 
 export { parseHostName, isValidDomainName } from './utils'
 
+export { useEndorsements } from './hooks/use-endorsements'
+
 export { colors } from './constants'
