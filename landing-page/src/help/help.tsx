@@ -6,32 +6,18 @@ import '../index.css'
 import { Feedback } from '@prole/model'
 import {
   buttonStyle,
+  containerStyle,
   errorLabelStyle,
+  innerStyle,
   sectionStyle,
   textBodyStyle,
+  wrapperStyle,
 } from '../styles'
 import Typography from '@material-ui/core/Typography'
 import { FieldInput } from '../field-input'
 import { Button, InputLabel } from '@mui/material'
 import { useDebouncedCallback } from 'use-debounce'
 import { REFRESH_MESSAGE } from '../constants'
-
-const wrapperStyle = {
-  justifyContent: 'center',
-  width: '100%',
-  display: 'flex',
-}
-
-const containerStyle = {
-  marginTop: '150px',
-  maxWidth: '500px',
-  minWidth: '400px',
-}
-
-const innerStyle = {
-  marginTop: '20vh',
-  marginBottom: '20vh',
-}
 
 const HelpPage: React.FC = () => {
   const [loading, setLoading] = useState<boolean>(false)

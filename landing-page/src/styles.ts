@@ -27,3 +27,20 @@ export const sectionStyle: CSSProperties = {
   ...panelStyle,
   marginBottom: '20px',
 }
+
+export const wrapperStyle = {
+  justifyContent: 'center',
+  width: '100%',
+  display: 'flex',
+}
+
+export const containerStyle = {
+  marginTop: '150px',
+  maxWidth: '500px',
+  minWidth: '400px',
+}
+
+export const innerStyle = {
+  marginTop: '20vh',
+  marginBottom: '20vh',
+}
