@@ -6,7 +6,7 @@ import {
   sectionStyle,
   textBodyStyle,
 } from '../styles'
-import { FieldInput, fieldInputStyle, inputProps } from './field-input'
+import { FieldInput, fieldInputStyle, inputProps } from '../field-input'
 import { Button, InputLabel, TextField } from '@mui/material'
 import { useDebouncedCallback } from 'use-debounce'
 import { DatePicker, LocalizationProvider } from '@mui/lab'
@@ -52,8 +52,6 @@ export const EndorsementCreate: React.FC<EndorsementCreateProps> = ({
 
   const onCreateClick = useCallback(() => {
     const createNewSource = async () => {
-      console.log('date', date!.getMilliseconds(), date)
-
       const response = await fetch('/api/endorsement', {
         method: 'POST',
         headers: {
@@ -90,8 +88,6 @@ export const EndorsementCreate: React.FC<EndorsementCreateProps> = ({
       createNewSource()
     }
   }, [name, link, date, author, sourceId, partyId])
-
-  console.log('whats missing!', !author)
 
   const renderDateInput = useCallback(
     (params) => (

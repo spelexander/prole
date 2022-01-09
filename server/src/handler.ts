@@ -6,6 +6,7 @@ import { addSource, search, sources } from './routes/source'
 import { withAuth } from './middleware/with-auth'
 import { IttyRequest } from './types'
 import { response } from './routes/utils'
+import { feedback } from './routes/feedback'
 
 const router = Router()
 
@@ -38,6 +39,7 @@ router
   .get('/api/source/search', withResources, search)
   .post('/api/source', withResources, withAuth, addSource)
   .get('/api/admin', withAuth, adminHandler)
+  .post('/api/feedback', feedback)
 
   /* 404 responses */
   .get('*', defaultHandler)

@@ -33,18 +33,48 @@ CreateIndex({
     ]
   }),
 CreateIndex({
+    name: "party_link_index_1",
+    source: Collection("Party"),
+    terms: [
+      { field: ["data", "link"] }
+    ]
+  }),
+CreateIndex({
+    name: "party_name_index_1",
+    source: Collection("Party"),
+    terms: [
+      { field: ["data", "name"] }
+    ]
+  }),
+CreateIndex({
     name: "source_domain_index_1",
     source: Collection("Source"),
     terms: [
       { field: ["data", "domain"] }
     ]
+  }),
+CreateIndex({
+    name: "source_link_index_1",
+    source: Collection("Source"),
+    terms: [
+      { field: ["data", "link"] }
+    ]
   })
-
+CreateIndex({
+    name: "source_name_index_1",
+    source: Collection("Source"),
+    terms: [
+      { field: ["data", "name"] }
+    ]
+  })
 ```
 
 Add FAUNA DB access secret to worker env
 ```shell
 wrangler secret put FAUNA_SECRET
+wrangler secret put SEND_GRID_SECRET
+wrangler secret put HELP_EMAIL_TO
+wrangler secret put HELP_EMAIL_FROM
 ```
 
 ## KV setup

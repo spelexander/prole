@@ -41,3 +41,9 @@ export type Result<T> =
       data: null
       error: string
     }
+
+export interface Feedback {
+  subject: string
+  feedback: string
+  email: string
+}

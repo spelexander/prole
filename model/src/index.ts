@@ -5,4 +5,5 @@ export type {
   Reference,
   EndorsementResponse,
   Source,
+  Feedback,
 } from './types'

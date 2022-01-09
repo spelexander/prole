@@ -9,6 +9,11 @@ kv-namespaces = [
   { binding = "USERS", id = "REDACTED", preview_id = "REDACTED" }
 ]
 
+[vars]
+FAUNA_SECRET = "REDACTED"
+SEND_GRID_SECRET = "REDACTED"
+HELP_EMAIL = "REDACTED"
+
 [env.production]
 zone_id = "REDACTED"
 account_id = "REDACTED"

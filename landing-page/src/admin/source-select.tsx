@@ -10,7 +10,7 @@ import Typography from '@material-ui/core/Typography'
 import { Button, InputLabel, MenuItem, Select } from '@mui/material'
 import { Id, Source } from '@prole/model'
 import { NO_CONTACT_MESSAGE, REFRESH_MESSAGE } from '../constants'
-import { FieldInput } from './field-input'
+import { FieldInput } from '../field-input'
 import { useDebouncedCallback } from 'use-debounce'
 import { authHeader } from './services/auth'
 

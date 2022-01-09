@@ -25,6 +25,7 @@ export default defineConfig({
       input: {
         main: resolve(root, 'index.html'),
         admin: resolve(root, 'admin', 'index.html'),
+        help: resolve(root, 'help', 'index.html'),
       },
     },
   },

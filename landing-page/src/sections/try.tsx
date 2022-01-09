@@ -77,7 +77,7 @@ export const Try: React.FC = () => {
   return (
     <div style={tryPanelStyle}>
       <Typography style={tryPromptInfoStyle}>
-        Enter a news company domain below
+        Enter a news source domain below
         <br />
         (like {'  '}
         <Button style={exampleButtonStyle} onClick={onClickExample}>
