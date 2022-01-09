@@ -27,5 +27,5 @@ export const listSources = async (faunaClient: Client) => {
     )
   )
 
-  return data.map(sanitize)
+  return data.map(sanitize) as Source[]
 }

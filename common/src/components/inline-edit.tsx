@@ -4,6 +4,9 @@ import React, {
   useState,
   useMemo,
   CSSProperties,
+  Ref,
+  MutableRefObject,
+  FocusEvent,
 } from 'react'
 import TextField from '@material-ui/core/TextField'
 import Typography from '@material-ui/core/Typography'
@@ -14,15 +17,25 @@ import { useDebouncedCallback } from 'use-debounce'
 export interface InlineEditProps {
   initialValue: string | null
   onChanged: (value: string) => void
+  onInput: (value: string) => void
   startEdit?: boolean
   width?: string
+  anchor?: MutableRefObject<Element | void>
+  onInputBlur?: (e: FocusEvent<HTMLInputElement>) => void
+  onStopEdit?: () => void
+  onStartEdit?: () => void
 }
 
 export const InlineEdit: React.FC<InlineEditProps> = ({
   initialValue,
   onChanged,
+  onInput,
   startEdit,
   width,
+  anchor,
+  onInputBlur,
+  onStopEdit,
+  onStartEdit,
 }) => {
   const [editing, setEditing] = useState(startEdit)
   const [value, setValue] = useState(initialValue)
@@ -35,6 +48,7 @@ export const InlineEdit: React.FC<InlineEditProps> = ({
 
         if (initialValue) {
           setEditing(false)
+          setValid(isValidDomainName(initialValue))
         }
       }
     }
@@ -48,17 +62,21 @@ export const InlineEdit: React.FC<InlineEditProps> = ({
       setValue(newValue)
       onChanged(newValue)
       setEditing(false)
+      onStopEdit && onStopEdit()
     }
   })
 
   const onChange = useDebouncedCallback((e) => {
     let newValue = e.target.value
+    onInput(newValue)
+
     const hostName = parseHostName(newValue)
     setValid(Boolean(hostName && isValidDomainName(hostName)))
   })
 
   const startEditing = useCallback(() => {
     setEditing(true)
+    onStartEdit && onStartEdit()
   }, [])
 
   const editStyle: CSSProperties = useMemo(
@@ -101,11 +119,13 @@ export const InlineEdit: React.FC<InlineEditProps> = ({
   if (editing) {
     return (
       <TextField
+        innerRef={anchor}
         inputProps={{ style: editStyle }}
         fullWidth
         autoFocus
         error={!valid}
         style={editStyle}
+        onBlur={onInputBlur}
         variant="outlined"
         onKeyDown={onKeyDown}
         onChange={onChange}

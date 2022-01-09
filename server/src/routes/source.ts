@@ -8,6 +8,8 @@ import {
 } from '../database/create-source'
 import { response } from './utils'
 import { listSources } from '../database/list-sources'
+import { search as fuzzySearch } from 'fast-fuzzy'
+import { Source } from '@prole/model'
 
 /**
  * Adds a new source authoring/donating entity (e.g. company, organisation, person)
@@ -74,4 +76,30 @@ export const validate = ({ link, name, domain }: SourceCreate) => {
   }
 
   return errors
+}
+
+/**
+ * Fuzzy search available sources based on domain and name
+ */
+export const search = async (request: IttyRequest) => {
+  const { faunaClient, query } = request
+
+  const term = query?.term
+  if (!term) {
+    return response(400, {
+      messages: ['term must be provided as a string for search'],
+    })
+  }
+
+  const { error, data } = await contain(() => listSources(faunaClient))
+
+  if (error) {
+    return response(500, { errors: [error] })
+  }
+
+  const results = fuzzySearch(term, data!, {
+    keySelector: (source: Source) => `${source.domain} ${source.name}`,
+  })
+
+  return response(200, results)
 }

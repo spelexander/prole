@@ -1,5 +1,5 @@
 import React from 'react'
-import { InlineEdit, ProleTitle } from '@prole/common'
+import { DomainEntry, InlineEdit, ProleTitle } from '@prole/common'
 
 export interface HeaderProps {
   domain: string | null
@@ -23,10 +23,11 @@ export const Header: React.FC<HeaderProps> = ({
 }) => {
   return (
     <div style={headerContainer}>
-      <InlineEdit
+      <DomainEntry
         initialValue={domain}
         onChanged={setCurrentUrl}
         startEdit={false}
+        baseUrl={`${import.meta.env.VITE_APP_SERVER_URL}`}
       />
       <a style={proleLink} href={homeLinkUrl} target="_blank">
         <ProleTitle />

@@ -21,7 +21,9 @@ export const useEndorsements = (
       }
 
       try {
-        const response = await fetch(`${baseUrl}/api/endorsement/${domain}`)
+        const response = await fetch(
+          `${baseUrl}/api/endorsement?domain=${domain}`
+        )
 
         if (response.ok) {
           const { endorsements }: EndorsementResponse = await response.json()

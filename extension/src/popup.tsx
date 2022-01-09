@@ -1,5 +1,4 @@
 import React, { CSSProperties, useEffect, useState } from 'react'
-import Divider from '@material-ui/core/Divider'
 import {
   EndorsementPanel,
   isValidDomainName,
@@ -12,10 +11,6 @@ import { Controls } from './controls'
 const popupStyle: CSSProperties = {
   width: '500px',
   height: '400px',
-}
-
-const dividerStyle: CSSProperties = {
-  margin: '5px',
 }
 
 export const Popup = () => {
@@ -50,7 +45,6 @@ export const Popup = () => {
         setCurrentUrl={setDomain}
         homeLinkUrl={`${import.meta.env.VITE_APP_HOME_URL}`}
       />
-      {/* <Divider style={dividerStyle} /> */}
       <EndorsementPanel
         error={error}
         endorsements={endorsements}

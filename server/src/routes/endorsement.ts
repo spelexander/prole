@@ -16,8 +16,8 @@ import { isValidDomainName, parseHostName } from '@prole/common/src/utils'
  * lookup endorsements for the provided source organisation domain
  */
 export const getEndorsement = async (request: IttyRequest) => {
-  const { faunaClient, workerCache } = request
-  const domain = parseHostName(request.params?.domain)
+  const { faunaClient, workerCache, query } = request
+  const domain = parseHostName(query?.domain)
 
   if (!domain || !isValidDomainName(domain)) {
     return response(400, {

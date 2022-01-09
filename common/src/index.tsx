@@ -5,6 +5,7 @@ export { ReferencesPanel } from './components/references-panel'
 export { EndorsementPanel } from './components/endorsement-panel'
 export { EndorsementItem } from './components/endorsement-item'
 export { EmptyHelpText } from './components/empty-help-text'
+export { DomainEntry } from './components/domain-entry'
 
 export { parseHostName, isValidDomainName } from './utils'
 

@@ -25,6 +25,7 @@
   },
   "dependencies": {
     "esbuild": "^0.14.9",
+    "fast-fuzzy": "^1.11.1",
     "faunadb": "^4.4.1",
     "itty-router": "^2.4.8"
   }

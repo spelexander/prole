@@ -2,7 +2,7 @@ import { Router } from 'itty-router'
 import { addEndorsement, getEndorsement } from './routes/endorsement'
 import faunadb from 'faunadb'
 import { addParty, parties } from './routes/party'
-import { addSource, sources } from './routes/source'
+import { addSource, search, sources } from './routes/source'
 import { withAuth } from './middleware/with-auth'
 import { IttyRequest } from './types'
 import { response } from './routes/utils'
@@ -30,11 +30,12 @@ const adminHandler = () =>
   response(200, { messages: ['the provided authentication is valid'] })
 
 router
-  .get('/api/endorsement/:domain', withResources, getEndorsement)
+  .get('/api/endorsement', withResources, getEndorsement)
   .post('/api/endorsement', withResources, withAuth, addEndorsement)
   .get('/api/party/all', withResources, parties)
   .post('/api/party', withResources, withAuth, addParty)
   .get('/api/source/all', withResources, sources)
+  .get('/api/source/search', withResources, search)
   .post('/api/source', withResources, withAuth, addSource)
   .get('/api/admin', withAuth, adminHandler)
 

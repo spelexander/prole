@@ -9,10 +9,9 @@ import Typography from '@material-ui/core/Typography'
 import {
   colors,
   EndorsementPanel,
-  InlineEdit,
+  DomainEntry,
   useEndorsements,
 } from '@prole/common'
-import { Endorsement, EndorsementResponse } from '@prole/model'
 import { Button } from '@mui/material'
 import { panelStyle } from '../styles'
 
@@ -87,7 +86,7 @@ export const Try: React.FC = () => {
         )
       </Typography>
       <br />
-      <InlineEdit
+      <DomainEntry
         width="100%"
         startEdit
         initialValue={domain}
