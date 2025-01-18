@@ -1,3 +1,5 @@
+# ❌ This project is no longer actively maintained ❌
+
 ![Prole.](readme-title.png "Prole.")
 
 [![Pull Requests Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg?style=flat)](http://makeapullrequest.com)
